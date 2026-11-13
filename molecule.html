@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Molecular Bonding Lab</title>
+  <meta name="description" content="Interactive 3D molecular model builder that demonstrates covalent, polar covalent and ionic bonding." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <i></i><i></i><i></i>
+      </span>
+      <div>
+        <h1>Molecular Bonding Lab</h1>
+        <p>Build molecules atom by atom and watch how bonds, electrons and shape emerge.</p>
+      </div>
+    </div>
+    <div class="shortcuts" aria-label="Keyboard shortcuts">
+      <kbd>M</kbd> move <kbd>B</kbd> bond <kbd>E</kbd> erase <kbd>Del</kbd> remove atom <kbd>Esc</kbd> cancel
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ LEFT: controls ============ -->
+    <aside class="panel left" aria-label="Controls">
+      <section>
+        <h2>1 · Pick atoms</h2>
+        <div id="palette" class="palette" role="list"></div>
+        <p class="hint">Click an atom to add it, or drag it onto the stage. Number under each symbol is its electronegativity.</p>
+      </section>
+
+      <section>
+        <h2>2 · Choose a tool</h2>
+        <div class="seg" id="modes" role="radiogroup" aria-label="Tool">
+          <button type="button" role="radio" aria-checked="true" data-mode="move" class="active">Move</button>
+          <button type="button" role="radio" aria-checked="false" data-mode="bond">Bond</button>
+          <button type="button" role="radio" aria-checked="false" data-mode="erase">Erase</button>
+        </div>
+        <p class="hint" id="modeHint"></p>
+      </section>
+
+      <section>
+        <h2>3 · Or load a molecule</h2>
+        <div id="presets" class="chips"></div>
+        <label class="check"><input type="checkbox" id="keepExisting" /> Keep atoms already on stage</label>
+      </section>
+
+      <section>
+        <h2>Actions</h2>
+        <div class="btn-row">
+          <button type="button" class="btn" id="btnFill" title="Add hydrogen atoms to every open valence">Fill with H</button>
+          <button type="button" class="btn" id="btnShake" title="Kick every atom to see the bonds hold the molecule together">Shake</button>
+          <button type="button" class="btn" id="btnView" title="Reset the camera">Reset view</button>
+          <button type="button" class="btn danger" id="btnClear">Clear</button>
+        </div>
+      </section>
+    </aside>
+
+    <!-- ============ CENTER: stage ============ -->
+    <section class="stage-col">
+      <div class="stage" id="stage">
+        <canvas id="scene" aria-label="3D molecule stage. Drag atoms to move them, drag empty space to rotate."></canvas>
+        <div class="empty-hint" id="emptyHint">
+          <strong>The stage is empty</strong>
+          <span>Add atoms from the left, or load a preset such as H₂O.</span>
+        </div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <div class="corner-note">Drag empty space to rotate · scroll to zoom</div>
+      </div>
+
+      <div class="toggles" role="group" aria-label="Display options">
+        <label class="pill"><input type="checkbox" id="optElec" checked /> Shared electrons</label>
+        <label class="pill"><input type="checkbox" id="optLP" checked /> Lone pairs</label>
+        <label class="pill"><input type="checkbox" id="optCharges" checked /> Charges</label>
+        <label class="pill"><input type="checkbox" id="optDipole" checked /> Dipole arrow</label>
+        <label class="pill"><input type="checkbox" id="optLabels" checked /> Symbols</label>
+        <label class="pill"><input type="checkbox" id="optAuto" checked /> Auto-bond on contact</label>
+        <label class="pill"><input type="checkbox" id="optRotate" /> Auto-rotate</label>
+      </div>
+
+      <div class="legend" aria-label="Legend">
+        <span><i class="dot e-shared"></i> shared electron pair</span>
+        <span><i class="dot e-lp"></i> lone pair</span>
+        <span><i class="dot e-free"></i> unpaired electron (open valence)</span>
+        <span><i class="dash"></i> ionic bond (electron transfer)</span>
+        <span><i class="arrow"></i> net dipole (toward δ−)</span>
+      </div>
+    </section>
+
+    <!-- ============ RIGHT: analysis ============ -->
+    <aside class="panel right" aria-label="Analysis">
+      <h2>Live analysis</h2>
+      <div id="analysis" class="analysis"></div>
+
+      <h2 class="learn-title">How bonding works</h2>
+      <details open>
+        <summary>Covalent bond</summary>
+        <p>Two atoms share a pair of electrons so both reach a full outer shell. One shared pair is a single bond, two a double bond, three a triple bond. Each atom can only form as many bonds as its <em>valence</em>: H 1, O 2, N 3, C 4.</p>
+      </details>
+      <details>
+        <summary>Polar vs nonpolar</summary>
+        <p>Electronegativity (EN) measures how hard an atom pulls on shared electrons. If the difference ΔEN is below 0.4 the sharing is even (nonpolar). From 0.4 to 1.7 the electrons sit closer to one atom, giving partial charges δ+ and δ− (polar).</p>
+      </details>
+      <details>
+        <summary>Ionic bond</summary>
+        <p>When ΔEN is about 1.7 or more, or a metal meets a nonmetal, one atom takes the electron outright. The result is a positive cation and a negative anion held together by electrostatic attraction, as in NaCl.</p>
+      </details>
+      <details>
+        <summary>Molecular shape (VSEPR)</summary>
+        <p>Bonds and lone pairs are regions of negative charge that repel one another, so they spread as far apart as possible. Lone pairs repel a little more, which squeezes the water angle to about 104.5° instead of 109.5°.</p>
+      </details>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
